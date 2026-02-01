@@ -1,6 +1,6 @@
 ---
 name: rust-verification
-description: Use when verifying Rust code changes during development - use cargo check instead of full build/clippy/test, run targeted tests only when test code is modified
+description: Use when verifying Rust code changes - lightweight cargo check during dev, full verification at branch completion
 ---
 
 # Rust Verification (Lightweight Mode)
@@ -37,30 +37,6 @@ Run these in `superpowers:finishing-a-development-branch`:
 /cargo.test
 ```
 
-## Flowchart
-
-```dot
-digraph rust_verification {
-    rankdir=TB;
-    "Code changed" [shape=box];
-    "Test code?" [shape=diamond];
-    "cargo check" [shape=box];
-    "cargo check && cargo test <module>" [shape=box];
-    "Exit 0?" [shape=diamond];
-    "Done" [shape=box, style=filled, fillcolor=lightgreen];
-    "Fix errors" [shape=box];
-
-    "Code changed" -> "Test code?";
-    "Test code?" -> "cargo check && cargo test <module>" [label="yes"];
-    "Test code?" -> "cargo check" [label="no"];
-    "cargo check && cargo test <module>" -> "Exit 0?";
-    "cargo check" -> "Exit 0?";
-    "Exit 0?" -> "Done" [label="yes"];
-    "Exit 0?" -> "Fix errors" [label="no"];
-    "Fix errors" -> "Test code?";
-}
-```
-
 ## Common Mistakes
 
 | Mistake | Fix |
@@ -68,3 +44,8 @@ digraph rust_verification {
 | Using `cargo build` | Use `cargo check` (no codegen, ~10x faster) |
 | Full test suite every change | Only test affected modules |
 | Skipping tests when test code changes | Always run `cargo test <module>` |
+
+## Integration
+
+**Pairs with:**
+- **superpowers:finishing-a-development-branch** - Full verification at branch completion
