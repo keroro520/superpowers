@@ -17,25 +17,38 @@ Guide completion of development work by presenting clear options and handling ch
 
 ### Step 1: Verify Tests
 
-**Before presenting options, verify tests pass:**
+**Before presenting options, verify tests pass.**
+
+#### Rust Projects (Cargo.toml exists)
+
+For Rust projects using `superpowers:rust-verification` during development, run full verification:
+
+```
+/cargo.clippy
+/cargo.test
+```
+
+**Both must pass.** This compensates for lightweight `cargo check` during development.
+
+#### Other Projects
 
 ```bash
-# Run project's test suite
-npm test / cargo test / pytest / go test ./...
+npm test / pytest / go test ./...
 ```
 
-**If tests fail:**
+#### If Verification Fails
+
 ```
-Tests failing (<N> failures). Must fix before completing:
+Verification failing. Must fix before completing:
 
 [Show failures]
 
-Cannot proceed with merge/PR until tests pass.
+Cannot proceed with merge/PR until all checks pass.
 ```
 
 Stop. Don't proceed to Step 2.
 
-**If tests pass:** Continue to Step 2.
+**If all pass:** Continue to Step 2.
 
 ### Step 2: Determine Base Branch
 
@@ -197,4 +210,5 @@ git worktree remove <worktree-path>
 - **executing-plans** (Step 5) - After all batches complete
 
 **Pairs with:**
-- **using-git-worktrees** - Cleans up worktree created by that skill
+- **superpowers:using-git-worktrees** - Cleans up worktree created by that skill
+- **superpowers:rust-verification** - Full verification here compensates for lightweight checks during development
